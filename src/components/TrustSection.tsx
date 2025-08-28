@@ -94,8 +94,6 @@ const TrustSection = () => {
         </div>
       </div>
     </section>
-  )
-  )
   );
 };
 
