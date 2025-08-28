@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Phone, Menu, X } from 'lucide-react';
-import logo from "../assets/LogoErrorFree.png"; // ajuste o caminho conforme a pasta real
+import logo from "../assets/LogoErrorFree.svg"; // ajuste o caminho conforme a pasta real
 
 function LogoSection() {
   return (
