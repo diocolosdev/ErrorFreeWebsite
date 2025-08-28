@@ -88,7 +88,7 @@ const TrustSection = () => {
             <p className="text-gray-600">Average Customer Rating</p>
           </div>
           <div>
-            <div className="text-4xl font-bold text-purple-600 mb-2">< 15min</div>
+            <div className="text-4xl font-bold text-purple-600 mb-2">{'< 15min'}</div>
             <p className="text-gray-600">Average Response Time</p>
           </div>
         </div>
