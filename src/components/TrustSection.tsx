@@ -94,7 +94,7 @@ const TrustSection = () => {
         </div>
       </div>
     </section>
-  );
+  )
 };
 
 export default TrustSection;
