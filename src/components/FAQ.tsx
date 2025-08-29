@@ -81,13 +81,13 @@ const FAQ = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="tel:02071234567"
+                href="tel:07745432478"
                 className="bg-blue-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors"
               >
                 Call Us Now
               </a>
               <a
-                href="https://wa.me/447700123456"
+                href="https://wa.me/4407745432478"
                 className="bg-green-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-green-700 transition-colors"
               >
                 WhatsApp Chat

@@ -30,7 +30,7 @@ const Header = () => {
     <>
       {/* Emergency Banner */}
       <div className="bg-red-600 text-white py-2 px-4 text-center text-sm font-medium">
-        🚨 IT EMERGENCY? Call Now: <a href="tel:02071234567" className="font-bold underline">020 7123 4567</a> • 24/7 Available
+        🚨 IT EMERGENCY? Call Now: <a href="tel:07745432478" className="font-bold underline">020 7123 4567</a> • 24/7 Available
       </div>
 
       <header className="bg-white shadow-lg sticky top-0 z-50">
@@ -51,7 +51,7 @@ const Header = () => {
 
             {/* Desktop CTA */}
             <div className="hidden lg:flex items-center space-x-4">
-              <a href="tel:02071234567" className="flex items-center space-x-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors">
+              <a href="tel:07745432478" className="flex items-center space-x-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors">
                 <Phone className="w-4 h-4" />
                 <span className="font-medium">020 7123 4567</span>
               </a>
@@ -75,7 +75,7 @@ const Header = () => {
                 <a href="#business" className="text-gray-700 hover:text-blue-600 px-2 py-1">Business Plans</a>
                 <a href="#coverage" className="text-gray-700 hover:text-blue-600 px-2 py-1">Coverage</a>
                 <a href="#contact" className="text-gray-700 hover:text-blue-600 px-2 py-1">Contact</a>
-                <a href="tel:02071234567" className="flex items-center space-x-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors mx-2 mt-4">
+                <a href="tel:07745432478" className="flex items-center space-x-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors mx-2 mt-4">
                   <Phone className="w-4 h-4" />
                   <span className="font-medium">Call Emergency</span>
                 </a>

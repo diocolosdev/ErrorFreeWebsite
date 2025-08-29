@@ -46,7 +46,7 @@ const Hero: React.FC<HeroProps> = ({ onBookNow }) => {
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
               <a
-                href="tel:02071234567"
+                href="tel:07745432478"
                 className="flex items-center justify-center space-x-3 bg-red-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-red-700 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
                 <Phone className="w-6 h-6" />
@@ -62,7 +62,7 @@ const Hero: React.FC<HeroProps> = ({ onBookNow }) => {
               </button>
 
               <a
-                href="https://wa.me/447700123456"
+                href="https://wa.me/4407745432478"
                 className="flex items-center justify-center space-x-3 bg-green-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-green-700 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
                 <MessageSquare className="w-6 h-6" />

@@ -78,7 +78,7 @@ const Footer = () => {
                 <Phone className="w-5 h-5 text-blue-400" />
                 <div>
                   <p className="text-white font-medium">London Emergency</p>
-                  <a href="tel:02071234567" className="text-blue-400 hover:underline">020 7123 4567</a>
+                  <a href="tel:07745432478" className="text-blue-400 hover:underline">020 7123 4567</a>
                 </div>
               </div>
               <div className="flex items-center space-x-3">
@@ -101,7 +101,7 @@ const Footer = () => {
             <div className="mt-6 p-4 bg-red-600 rounded-xl">
               <p className="text-white font-semibold text-sm mb-2">🚨 IT Emergency?</p>
               <a
-                href="tel:02071234567"
+                href="tel:07745432478"
                 className="block text-center bg-white text-red-600 py-2 px-4 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors"
               >
                 Call Now!
