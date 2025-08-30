@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { X, Calendar, Clock, MapPin, CreditCard, User, Phone, Mail } from 'lucide-react';
+import { Elements } from '@stripe/react-stripe-js';
+import stripePromise from '../lib/stripe';
+import PaymentForm from './PaymentForm';
 
 interface BookingWidgetProps {
   isOpen: boolean;
@@ -20,6 +23,8 @@ const BookingWidget: React.FC<BookingWidgetProps> = ({ isOpen, onClose }) => {
     email: '',
     description: ''
   });
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [paymentError, setPaymentError] = useState('');
 
   const services = [
     { id: 'emergency', name: 'Emergency Support', price: 'From £59' },
@@ -37,12 +42,36 @@ const BookingWidget: React.FC<BookingWidgetProps> = ({ isOpen, onClose }) => {
     { id: 'flexible', name: 'Flexible (within 3 days)', surcharge: '-£10' }
   ];
 
+  const calculateAmount = () => {
+    const basePrice = formData.service === 'remote' ? 59 : 
+                     formData.service === 'emergency' ? 89 : 
+                     formData.service === 'onsite' ? 89 :
+                     formData.service === 'upgrade' ? 149 :
+                     formData.service === 'smarthome' ? 199 :
+                     formData.service === 'website' ? 1499 : 89;
+    
+    const urgencyFee = formData.urgency === 'emergency' ? 40 :
+                      formData.urgency === 'urgent' ? 20 :
+                      formData.urgency === 'flexible' ? -10 : 0;
+    
+    return basePrice + urgencyFee;
+  };
+
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const nextStep = () => setStep(prev => Math.min(prev + 1, 4));
+  const nextStep = () => setStep(prev => Math.min(prev + 1, 5));
   const prevStep = () => setStep(prev => Math.max(prev - 1, 1));
+
+  const handlePaymentSuccess = () => {
+    setPaymentSuccess(true);
+    setStep(5);
+  };
+
+  const handlePaymentError = (error: string) => {
+    setPaymentError(error);
+  };
 
   if (!isOpen) return null;
 
@@ -53,7 +82,7 @@ const BookingWidget: React.FC<BookingWidgetProps> = ({ isOpen, onClose }) => {
         <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex justify-between items-center rounded-t-2xl">
           <div>
             <h2 className="text-2xl font-bold text-gray-900">Book IT Support</h2>
-            <p className="text-gray-600">Step {step} of 4</p>
+            <p className="text-gray-600">Step {Math.min(step, 4)} of 4</p>
           </div>
           <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full">
             <X className="w-6 h-6" />
@@ -66,7 +95,7 @@ const BookingWidget: React.FC<BookingWidgetProps> = ({ isOpen, onClose }) => {
             {[1, 2, 3, 4].map((i) => (
               <div
                 key={i}
-                className={`flex-1 h-2 rounded-full ${i <= step ? 'bg-blue-600' : 'bg-gray-200'}`}
+                className={`flex-1 h-2 rounded-full ${i <= Math.min(step, 4) ? 'bg-blue-600' : 'bg-gray-200'}`}
               />
             ))}
           </div>
@@ -251,10 +280,10 @@ const BookingWidget: React.FC<BookingWidgetProps> = ({ isOpen, onClose }) => {
           {/* Step 4: Payment */}
           {step === 4 && (
             <div className="space-y-6">
-              <h3 className="text-xl font-semibold text-gray-900">Secure Payment</h3>
+              <h3 className="text-xl font-semibold text-gray-900">Booking Summary</h3>
               
               <div className="bg-gray-50 rounded-xl p-6">
-                <h4 className="font-semibold text-gray-900 mb-4">Booking Summary</h4>
+                <h4 className="font-semibold text-gray-900 mb-4">Service Details</h4>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span>Service:</span>
@@ -268,36 +297,98 @@ const BookingWidget: React.FC<BookingWidgetProps> = ({ isOpen, onClose }) => {
                     <span>Location:</span>
                     <span>{formData.postcode}</span>
                   </div>
+                  <div className="flex justify-between">
+                    <span>Contact:</span>
+                    <span>{formData.name} - {formData.phone}</span>
+                  </div>
                   <div className="border-t pt-2 mt-2 flex justify-between font-semibold">
                     <span>Estimated Total:</span>
-                    <span>£89 - £129</span>
+                    <span>£{calculateAmount()}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-blue-50 rounded-xl p-4">
-                <div className="flex items-center space-x-2 text-blue-800">
-                  <CreditCard className="w-5 h-5" />
-                  <span className="font-semibold">Secure Payment with Stripe</span>
+              <button 
+                onClick={nextStep}
+                className="w-full bg-blue-600 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:bg-blue-700 transition-colors"
+              >
+                Proceed to Payment
+              </button>
+            </div>
+          )}
+
+          {/* Step 5: Payment */}
+          {step === 5 && !paymentSuccess && (
+            <div className="space-y-6">
+              <h3 className="text-xl font-semibold text-gray-900">Secure Payment</h3>
+              
+              <div className="bg-gray-50 rounded-xl p-6">
+                <div className="flex justify-between items-center">
+                  <span className="font-semibold text-gray-900">Total Amount:</span>
+                  <span className="text-2xl font-bold text-blue-600">£{calculateAmount()}</span>
                 </div>
-                <p className="text-sm text-blue-700 mt-2">
-                  Your payment is processed securely. You'll receive an automatic receipt and SMS confirmation.
-                </p>
               </div>
 
-              <button className="w-full bg-green-600 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:bg-green-700 transition-colors">
-                Pay Securely & Confirm Booking
-              </button>
+              {paymentError && (
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                  <p className="text-red-800 text-sm">{paymentError}</p>
+                </div>
+              )}
 
-              <p className="text-xs text-gray-600 text-center">
-                By proceeding, you agree to our Terms of Service and Privacy Policy. 
-                Payments are processed securely via Stripe.
+              <Elements stripe={stripePromise}>
+                <PaymentForm
+                  amount={calculateAmount()}
+                  onSuccess={handlePaymentSuccess}
+                  onError={handlePaymentError}
+                  bookingData={formData}
+                />
+              </Elements>
+            </div>
+          )}
+
+          {/* Step 6: Success */}
+          {step === 5 && paymentSuccess && (
+            <div className="text-center space-y-6">
+              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+                <CheckCircle className="w-12 h-12 text-green-600" />
+              </div>
+              
+              <h3 className="text-2xl font-bold text-gray-900">Booking Confirmed!</h3>
+              <p className="text-gray-600">
+                Your payment has been processed successfully. You'll receive a confirmation email and SMS shortly.
               </p>
+              
+              <div className="bg-green-50 rounded-xl p-6">
+                <h4 className="font-semibold text-green-800 mb-2">What happens next?</h4>
+                <ul className="text-sm text-green-700 space-y-1 text-left">
+                  <li>• You'll receive an email confirmation within 5 minutes</li>
+                  <li>• SMS confirmation with technician details</li>
+                  <li>• Our technician will contact you 30 minutes before arrival</li>
+                  <li>• Emergency support: We'll call you within 15 minutes</li>
+                </ul>
+              </div>
+              
+              <div className="space-y-3">
+                <p className="text-sm text-gray-600">
+                  <strong>Booking Reference:</strong> EF{Date.now().toString().slice(-6)}
+                </p>
+                <p className="text-sm text-gray-600">
+                  Need to make changes? Call us on <a href="tel:07745432478" className="text-blue-600 underline">07745432478</a>
+                </p>
+              </div>
+              
+              <button
+                onClick={onClose}
+                className="bg-blue-600 text-white py-3 px-8 rounded-xl font-semibold hover:bg-blue-700 transition-colors"
+              >
+                Close
+              </button>
             </div>
           )}
 
           {/* Navigation Buttons */}
-          <div className="flex justify-between mt-8 pt-6 border-t border-gray-200">
+          {step < 5 && (
+            <div className="flex justify-between mt-8 pt-6 border-t border-gray-200">
             {step > 1 && (
               <button
                 onClick={prevStep}
@@ -319,7 +410,8 @@ const BookingWidget: React.FC<BookingWidgetProps> = ({ isOpen, onClose }) => {
                 Continue →
               </button>
             )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

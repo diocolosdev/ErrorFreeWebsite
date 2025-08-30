@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Phone, MessageSquare, Calendar, Shield, Clock, MapPin, Star, CheckCircle, Zap, Monitor, Home, Building, Users } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Services from './components/Services';
