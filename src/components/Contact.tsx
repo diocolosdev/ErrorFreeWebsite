@@ -23,8 +23,8 @@ const Contact = () => {
                   <Phone className="w-6 h-6 text-blue-400 mt-1 flex-shrink-0" />
                   <div>
                     <h4 className="font-semibold text-white mb-1">Emergency Numbers</h4>
-                    <p className="text-gray-300">London: <a href="tel:07745432478" className="text-blue-400 hover:underline">020 7123 4567</a></p>
-                    <p className="text-gray-300">Liverpool: <a href="tel:01517654321" className="text-blue-400 hover:underline">0151 765 4321</a></p>
+                    <p className="text-gray-300">London: <a href="tel:07745432478" className="text-blue-400 hover:underline">07745432478</a></p>
+                    <p className="text-gray-300">Liverpool: <a href="tel:07453477603" className="text-blue-400 hover:underline">0151 765 4321</a></p>
                   </div>
                 </div>
 
@@ -87,7 +87,7 @@ const Contact = () => {
                   Call London: 07745432478
                 </a>
                 <a
-                  href="tel:01517654321"
+                  href="tel:07453477603"
                   className="bg-white text-red-600 px-6 py-3 rounded-xl font-semibold text-center hover:bg-gray-100 transition-colors"
                 >
                   Call Liverpool: 0151 765 4321

@@ -48,7 +48,7 @@ const StickyCTAs: React.FC<StickyCTAsProps> = ({ onBookNow }) => {
             className="flex items-center space-x-3 bg-red-600 text-white px-6 py-4 rounded-full shadow-2xl hover:bg-red-700 transition-all duration-300 transform hover:scale-105 animate-pulse"
           >
             <Phone className="w-6 h-6" />
-            <span className="font-semibold">Emergency: 020 7123 4567</span>
+            <span className="font-semibold">Emergency: 07745432478</span>
           </a>
         </div>
 

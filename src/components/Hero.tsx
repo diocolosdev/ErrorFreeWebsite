@@ -50,7 +50,7 @@ const Hero: React.FC<HeroProps> = ({ onBookNow }) => {
                 className="flex items-center justify-center space-x-3 bg-red-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-red-700 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
                 <Phone className="w-6 h-6" />
-                <span>Call Now - 020 7123 4567</span>
+                <span>Call Now - 07745432478</span>
               </a>
               
               <button
