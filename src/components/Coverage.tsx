@@ -100,7 +100,7 @@ const Coverage = () => {
             
             <div className="bg-green-50 rounded-xl p-4">
               <p className="text-sm text-green-800 font-medium">
-                📞 Liverpool Emergency: <a href="tel:07453477603" className="underline">07453477603</a>
+                📞 Liverpool Emergency: <a href="tel:07745432478" className="underline">07745432478</a>
               </p>
             </div>
           </div>
