@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { Phone, Menu, X, User, LogOut } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { useAuth } from './Auth/AuthProvider';
+import { Phone, Menu, X } from 'lucide-react';
 import logo from "../assets/LogoErrorFree.png"; // ajuste o caminho conforme a pasta real
 
 function LogoSection() {
@@ -27,7 +25,6 @@ function LogoSection() {
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { user, signOut } = useAuth();
 
   return (
     <>
@@ -54,39 +51,6 @@ const Header = () => {
 
             {/* Desktop CTA */}
             <div className="hidden lg:flex items-center space-x-4">
-              {user ? (
-                <div className="flex items-center space-x-4">
-                  <Link
-                    to="/dashboard"
-                    className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 transition-colors"
-                  >
-                    <User className="w-4 h-4" />
-                    <span>Dashboard</span>
-                  </Link>
-                  <button
-                    onClick={signOut}
-                    className="flex items-center space-x-2 text-gray-700 hover:text-red-600 transition-colors"
-                  >
-                    <LogOut className="w-4 h-4" />
-                    <span>Sign Out</span>
-                  </button>
-                </div>
-              ) : (
-                <div className="flex items-center space-x-4">
-                  <Link
-                    to="/login"
-                    className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
-                  >
-                    Sign In
-                  </Link>
-                  <Link
-                    to="/signup"
-                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium"
-                  >
-                    Sign Up
-                  </Link>
-                </div>
-              )}
               <a href="tel:07745432478" className="flex items-center space-x-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors">
                 <Phone className="w-4 h-4" />
                 <span className="font-medium">07745432478</span>
@@ -111,17 +75,6 @@ const Header = () => {
                 <a href="#business" className="text-gray-700 hover:text-blue-600 px-2 py-1">Business Plans</a>
                 <a href="#coverage" className="text-gray-700 hover:text-blue-600 px-2 py-1">Coverage</a>
                 <a href="#contact" className="text-gray-700 hover:text-blue-600 px-2 py-1">Contact</a>
-                {user ? (
-                  <>
-                    <Link to="/dashboard" className="text-gray-700 hover:text-blue-600 px-2 py-1">Dashboard</Link>
-                    <button onClick={signOut} className="text-left text-gray-700 hover:text-red-600 px-2 py-1">Sign Out</button>
-                  </>
-                ) : (
-                  <>
-                    <Link to="/login" className="text-gray-700 hover:text-blue-600 px-2 py-1">Sign In</Link>
-                    <Link to="/signup" className="text-gray-700 hover:text-blue-600 px-2 py-1">Sign Up</Link>
-                  </>
-                )}
                 <a href="tel:07745432478" className="flex items-center space-x-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors mx-2 mt-4">
                   <Phone className="w-4 h-4" />
                   <span className="font-medium">Call Emergency</span>
