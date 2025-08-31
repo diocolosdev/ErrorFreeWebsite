@@ -1,11 +1,25 @@
 import React from 'react';
 import { Phone, MessageSquare, Calendar, Clock, Shield, CheckCircle } from 'lucide-react';
+import { trackEmergencyCall, trackWhatsAppClick } from '../lib/analytics';
 
 interface HeroProps {
   onBookNow: () => void;
+  hasAnalyticsConsent?: boolean | null;
 }
 
-const Hero: React.FC<HeroProps> = ({ onBookNow }) => {
+const Hero: React.FC<HeroProps> = ({ onBookNow, hasAnalyticsConsent }) => {
+  const handleEmergencyCall = () => {
+    if (hasAnalyticsConsent) {
+      trackEmergencyCall();
+    }
+  };
+
+  const handleWhatsAppClick = () => {
+    if (hasAnalyticsConsent) {
+      trackWhatsAppClick();
+    }
+  };
+
   return (
     <section className="bg-gradient-to-br from-gray-50 to-white py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -47,6 +61,7 @@ const Hero: React.FC<HeroProps> = ({ onBookNow }) => {
             <div className="flex flex-col sm:flex-row gap-4">
               <a
                 href="tel:07745432478"
+                onClick={handleEmergencyCall}
                 className="flex items-center justify-center space-x-3 bg-red-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-red-700 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
                 <Phone className="w-6 h-6" />
@@ -55,6 +70,7 @@ const Hero: React.FC<HeroProps> = ({ onBookNow }) => {
               
               <button
                 onClick={onBookNow}
+              onClick={handleWhatsAppClick}
                 className="flex items-center justify-center space-x-3 bg-blue-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
                 <Calendar className="w-6 h-6" />

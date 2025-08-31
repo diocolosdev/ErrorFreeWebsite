@@ -10,6 +10,9 @@ A professional IT services website with integrated Stripe payments for booking e
 - Premium website development services
 - Business retainer plans (Bronze, Silver, Gold)
 - Integrated Stripe payment processing
+- Google Analytics 4 e-commerce tracking
+- GDPR-compliant consent management
+- Purchase confirmation system
 - Mobile-responsive design
 - London & Liverpool coverage areas
 
@@ -19,6 +22,8 @@ A professional IT services website with integrated Stripe payments for booking e
 - **Styling**: Tailwind CSS
 - **Icons**: Lucide React
 - **Payments**: Stripe
+- **Analytics**: Google Analytics 4 with react-ga4
+- **SEO**: React Helmet Async
 - **Build Tool**: Vite
 
 ## Development Setup
@@ -36,6 +41,7 @@ cp .env.example .env
 3. Add your Stripe publishable key to `.env`:
 ```
 VITE_STRIPE_PUBLISHABLE_KEY=pk_test_your_key_here
+VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 ```
 
 4. Start development server:
@@ -59,6 +65,7 @@ Create a `.env` file with:
 
 ```
 VITE_STRIPE_PUBLISHABLE_KEY=pk_live_your_live_key_here
+VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 VITE_API_URL=https://your-api-domain.com
 ```
 
@@ -125,12 +132,36 @@ The website includes a complete Stripe payment integration:
 - **BookingWidget**: Multi-step booking process with payment
 - **Stripe Elements**: Secure payment form components
 - **Payment confirmation**: Success/error handling
+- **Purchase confirmation page**: Complete booking summary and next steps
 
+## Analytics Integration
+
+The website includes comprehensive Google Analytics 4 tracking:
+
+- **E-commerce Events**: Tracks the complete purchase funnel
+- **Conversion Goals**: Monitors booking completions and revenue
+- **GDPR Compliance**: Cookie consent banner with user preferences
+- **Enhanced Tracking**: Service selections, emergency calls, WhatsApp clicks
+
+### GA4 Events Tracked
+
+- `select_item`: When user selects a service
+- `add_to_cart`: When proceeding from service selection
+- `begin_checkout`: When reaching payment step
+- `purchase`: When booking is completed
+- Custom events: Emergency calls, WhatsApp clicks, booking starts
 ### Testing Payments
 
 Use Stripe test cards:
 - Success: `4242 4242 4242 4242`
 - Declined: `4000 0000 0000 0002`
+
+### Testing Analytics
+
+1. Enable GA4 DebugView in your Google Analytics dashboard
+2. Visit the website and interact with booking widget
+3. Check DebugView for events: `select_item`, `add_to_cart`, `begin_checkout`, `purchase`
+4. Verify transaction data accuracy in e-commerce reports
 
 ## Security Features
 
@@ -139,6 +170,7 @@ Use Stripe test cards:
 - Secure payment processing
 - No sensitive data stored in frontend
 - Environment variable protection
+- GDPR-compliant analytics with user consent
 
 ## Support
 

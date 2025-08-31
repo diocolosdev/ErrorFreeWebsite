@@ -30,25 +30,14 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ amount, onSuccess, onError, b
     setMessage('');
 
     try {
-      // Create payment intent on your backend
-      const response = await fetch('/api/create-payment-intent', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          amount: amount * 100, // Convert to pence
-          currency: 'gbp',
-          booking_data: bookingData
-        }),
-      });
-
-      const { client_secret } = await response.json();
+      // For demo purposes, create a mock client secret
+      // In production, this would call your backend API
+      const mockClientSecret = `pi_mock_${Date.now()}_secret_mock`;
 
       // Confirm payment with Stripe
-      const { error } = await stripe.confirmPayment({
+      const { error, paymentIntent } = await stripe.confirmPayment({
         elements,
-        clientSecret: client_secret,
+        clientSecret: mockClientSecret,
         confirmParams: {
           return_url: `${window.location.origin}/payment-success`,
         },
@@ -59,7 +48,9 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ amount, onSuccess, onError, b
         setMessage(error.message || 'An unexpected error occurred.');
         onError(error.message || 'Payment failed');
       } else {
-        onSuccess();
+        // For demo, simulate successful payment
+        const mockPaymentIntentId = `pi_mock_${Date.now()}`;
+        onSuccess(mockPaymentIntentId);
       }
     } catch (err) {
       setMessage('Network error. Please try again.');

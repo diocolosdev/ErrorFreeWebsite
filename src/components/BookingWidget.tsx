@@ -3,13 +3,16 @@ import { X, Calendar, Clock, MapPin, CreditCard, User, Phone, Mail } from 'lucid
 import { Elements } from '@stripe/react-stripe-js';
 import stripePromise from '../lib/stripe';
 import PaymentForm from './PaymentForm';
+import { trackSelectItem, trackAddToCart, trackBeginCheckout } from '../lib/analytics';
 
 interface BookingWidgetProps {
   isOpen: boolean;
   onClose: () => void;
+  onBookingConfirmed: (confirmationData: any) => void;
+  hasAnalyticsConsent: boolean | null;
 }
 
-const BookingWidget: React.FC<BookingWidgetProps> = ({ isOpen, onClose }) => {
+const BookingWidget: React.FC<BookingWidgetProps> = ({ isOpen, onClose, onBookingConfirmed, hasAnalyticsConsent }) => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     service: '',
@@ -23,7 +26,6 @@ const BookingWidget: React.FC<BookingWidgetProps> = ({ isOpen, onClose }) => {
     email: '',
     description: ''
   });
-  const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [paymentError, setPaymentError] = useState('');
 
   const services = [
@@ -59,14 +61,64 @@ const BookingWidget: React.FC<BookingWidgetProps> = ({ isOpen, onClose }) => {
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    
+    // Track service selection for GA4
+    if (field === 'service' && hasAnalyticsConsent) {
+      const selectedService = services.find(s => s.id === value);
+      if (selectedService) {
+        trackSelectItem(value, selectedService.name, 'IT Service', calculateAmount());
+      }
+    }
   };
 
   const nextStep = () => setStep(prev => Math.min(prev + 1, 5));
   const prevStep = () => setStep(prev => Math.max(prev - 1, 1));
 
-  const handlePaymentSuccess = () => {
-    setPaymentSuccess(true);
-    setStep(5);
+  // Track add to cart when proceeding from service selection
+  const handleNextFromService = () => {
+    if (hasAnalyticsConsent && formData.service) {
+      const selectedService = services.find(s => s.id === formData.service);
+      if (selectedService) {
+        trackAddToCart('GBP', calculateAmount(), [{
+          item_id: formData.service,
+          item_name: selectedService.name,
+          item_category: 'IT Service',
+          quantity: 1,
+          price: calculateAmount()
+        }]);
+      }
+    }
+    nextStep();
+  };
+
+  // Track begin checkout when reaching payment step
+  const handleBeginCheckout = () => {
+    if (hasAnalyticsConsent && formData.service) {
+      const selectedService = services.find(s => s.id === formData.service);
+      if (selectedService) {
+        trackBeginCheckout('GBP', calculateAmount(), [{
+          item_id: formData.service,
+          item_name: selectedService.name,
+          item_category: 'IT Service',
+          quantity: 1,
+          price: calculateAmount()
+        }]);
+      }
+    }
+    nextStep();
+  };
+
+  const handlePaymentSuccess = (paymentIntentId: string) => {
+    const bookingReference = `EF${Date.now().toString().slice(-6)}`;
+    const confirmationData = {
+      bookingReference,
+      bookingData: formData,
+      amount: calculateAmount(),
+      paymentMethod: 'Card Payment',
+      paymentIntentId
+    };
+    
+    onBookingConfirmed(confirmationData);
   };
 
   const handlePaymentError = (error: string) => {
@@ -309,7 +361,7 @@ const BookingWidget: React.FC<BookingWidgetProps> = ({ isOpen, onClose }) => {
               </div>
 
               <button 
-                onClick={nextStep}
+                onClick={handleBeginCheckout}
                 className="w-full bg-blue-600 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:bg-blue-700 transition-colors"
               >
                 Proceed to Payment
@@ -318,7 +370,7 @@ const BookingWidget: React.FC<BookingWidgetProps> = ({ isOpen, onClose }) => {
           )}
 
           {/* Step 5: Payment */}
-          {step === 5 && !paymentSuccess && (
+          {step === 5 && (
             <div className="space-y-6">
               <h3 className="text-xl font-semibold text-gray-900">Secure Payment</h3>
               
@@ -346,46 +398,6 @@ const BookingWidget: React.FC<BookingWidgetProps> = ({ isOpen, onClose }) => {
             </div>
           )}
 
-          {/* Step 6: Success */}
-          {step === 5 && paymentSuccess && (
-            <div className="text-center space-y-6">
-              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-                <CheckCircle className="w-12 h-12 text-green-600" />
-              </div>
-              
-              <h3 className="text-2xl font-bold text-gray-900">Booking Confirmed!</h3>
-              <p className="text-gray-600">
-                Your payment has been processed successfully. You'll receive a confirmation email and SMS shortly.
-              </p>
-              
-              <div className="bg-green-50 rounded-xl p-6">
-                <h4 className="font-semibold text-green-800 mb-2">What happens next?</h4>
-                <ul className="text-sm text-green-700 space-y-1 text-left">
-                  <li>• You'll receive an email confirmation within 5 minutes</li>
-                  <li>• SMS confirmation with technician details</li>
-                  <li>• Our technician will contact you 30 minutes before arrival</li>
-                  <li>• Emergency support: We'll call you within 15 minutes</li>
-                </ul>
-              </div>
-              
-              <div className="space-y-3">
-                <p className="text-sm text-gray-600">
-                  <strong>Booking Reference:</strong> EF{Date.now().toString().slice(-6)}
-                </p>
-                <p className="text-sm text-gray-600">
-                  Need to make changes? Call us on <a href="tel:07745432478" className="text-blue-600 underline">07745432478</a>
-                </p>
-              </div>
-              
-              <button
-                onClick={onClose}
-                className="bg-blue-600 text-white py-3 px-8 rounded-xl font-semibold hover:bg-blue-700 transition-colors"
-              >
-                Close
-              </button>
-            </div>
-          )}
-
           {/* Navigation Buttons */}
           {step < 5 && (
             <div className="flex justify-between mt-8 pt-6 border-t border-gray-200">
@@ -399,7 +411,7 @@ const BookingWidget: React.FC<BookingWidgetProps> = ({ isOpen, onClose }) => {
             )}
             {step < 4 && (
               <button
-                onClick={nextStep}
+                onClick={step === 1 ? handleNextFromService : nextStep}
                 disabled={
                   (step === 1 && !formData.service) ||
                   (step === 2 && (!formData.urgency || !formData.date)) ||
