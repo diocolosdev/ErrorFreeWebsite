@@ -1,5 +1,7 @@
 import React from 'react';
 import { Clock, Home, Monitor, CheckCircle } from 'lucide-react';
+import StripeCheckout from './StripeCheckout';
+import { stripeProducts } from '../stripe-config';
 
 const Pricing = () => {
   const pricingCards = [

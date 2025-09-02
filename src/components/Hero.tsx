@@ -70,7 +70,6 @@ const Hero: React.FC<HeroProps> = ({ onBookNow, hasAnalyticsConsent }) => {
               
               <button
                 onClick={onBookNow}
-              onClick={handleWhatsAppClick}
                 className="flex items-center justify-center space-x-3 bg-blue-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
                 <Calendar className="w-6 h-6" />
@@ -79,6 +78,7 @@ const Hero: React.FC<HeroProps> = ({ onBookNow, hasAnalyticsConsent }) => {
 
               <a
                 href="https://wa.me/4407745432478"
+                onClick={handleWhatsAppClick}
                 className="flex items-center justify-center space-x-3 bg-green-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-green-700 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
                 <MessageSquare className="w-6 h-6" />

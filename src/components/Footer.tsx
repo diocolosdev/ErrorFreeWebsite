@@ -1,5 +1,6 @@
 import React from 'react';
 import { Phone, Mail, MapPin, Shield, Clock } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -34,14 +35,14 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-semibold mb-6">Services</h4>
+            <h4 className="text-lg font-semibold mb-6">Quick Links</h4>
             <ul className="space-y-3 text-gray-300">
-              <li><a href="#emergency" className="hover:text-blue-400 transition-colors">Emergency 24/7</a></li>
-              <li><a href="#remote" className="hover:text-blue-400 transition-colors">Remote Support</a></li>
-              <li><a href="#upgrades" className="hover:text-blue-400 transition-colors">Computer Upgrades</a></li>
-              <li><a href="#smarthome" className="hover:text-blue-400 transition-colors">Smart Home Setup</a></li>
-              <li><a href="#websites" className="hover:text-blue-400 transition-colors">Premium Websites</a></li>
-              <li><a href="#business" className="hover:text-blue-400 transition-colors">Business Plans</a></li>
+              <li><Link to="/services" className="hover:text-blue-400 transition-colors">Services</Link></li>
+              <li><Link to="/universities" className="hover:text-blue-400 transition-colors">Universities</Link></li>
+              <li><Link to="/about" className="hover:text-blue-400 transition-colors">About</Link></li>
+              <li><Link to="/contact" className="hover:text-blue-400 transition-colors">Contact</Link></li>
+              <li><Link to="/faq" className="hover:text-blue-400 transition-colors">FAQ</Link></li>
+              <li><Link to="/security" className="hover:text-blue-400 transition-colors">Security Systems</Link></li>
             </ul>
           </div>
 
@@ -118,10 +119,10 @@ const Footer = () => {
             </div>
             
             <div className="flex flex-wrap gap-6 text-sm text-gray-400">
-              <a href="/privacy" className="hover:text-blue-400 transition-colors">Privacy Policy</a>
-              <a href="/terms" className="hover:text-blue-400 transition-colors">Terms of Service</a>
-              <a href="/cookies" className="hover:text-blue-400 transition-colors">Cookie Policy</a>
-              <a href="/complaints" className="hover:text-blue-400 transition-colors">Complaints</a>
+              <Link to="/privacy-policy" className="hover:text-blue-400 transition-colors">Privacy Policy</Link>
+              <Link to="/terms" className="hover:text-blue-400 transition-colors">Terms of Service</Link>
+              <Link to="/cookies-policy" className="hover:text-blue-400 transition-colors">Cookie Policy</Link>
+              <Link to="/complaints" className="hover:text-blue-400 transition-colors">Complaints</Link>
             </div>
           </div>
           

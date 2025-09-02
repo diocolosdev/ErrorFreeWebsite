@@ -4,6 +4,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import stripePromise from '../lib/stripe';
 import PaymentForm from './PaymentForm';
 import { trackSelectItem, trackAddToCart, trackBeginCheckout } from '../lib/analytics';
+import { sendBookingConfirmation, validateBookingData } from '../api/booking';
 
 interface BookingWidgetProps {
   isOpen: boolean;
@@ -110,6 +111,20 @@ const BookingWidget: React.FC<BookingWidgetProps> = ({ isOpen, onClose, onBookin
 
   const handlePaymentSuccess = (paymentIntentId: string) => {
     const bookingReference = `EF${Date.now().toString().slice(-6)}`;
+    
+    // Send booking confirmation email
+    sendBookingConfirmation(formData, bookingReference, calculateAmount())
+      .then((result) => {
+        if (result.success) {
+          console.log('Booking confirmation sent successfully');
+        } else {
+          console.error('Failed to send booking confirmation:', result.message);
+        }
+      })
+      .catch((error) => {
+        console.error('Error sending booking confirmation:', error);
+      });
+    
     const confirmationData = {
       bookingReference,
       bookingData: formData,
@@ -123,6 +138,18 @@ const BookingWidget: React.FC<BookingWidgetProps> = ({ isOpen, onClose, onBookin
 
   const handlePaymentError = (error: string) => {
     setPaymentError(error);
+  };
+  
+  // Validate form data before proceeding to payment
+  const validateCurrentStep = () => {
+    if (step === 3) {
+      const errors = validateBookingData(formData);
+      if (errors.length > 0) {
+        setPaymentError(errors.join(', '));
+        return false;
+      }
+    }
+    return true;
   };
 
   if (!isOpen) return null;
@@ -362,6 +389,7 @@ const BookingWidget: React.FC<BookingWidgetProps> = ({ isOpen, onClose, onBookin
 
               <button 
                 onClick={handleBeginCheckout}
+                disabled={!validateCurrentStep()}
                 className="w-full bg-blue-600 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:bg-blue-700 transition-colors"
               >
                 Proceed to Payment

@@ -1,5 +1,7 @@
 import React from 'react';
 import { Building, Users, Shield, CheckCircle, Star } from 'lucide-react';
+import StripeCheckout from './StripeCheckout';
+import { stripeProducts } from '../stripe-config';
 
 const BusinessPlans = () => {
   const plans = [
@@ -99,9 +101,28 @@ const BusinessPlans = () => {
                 ))}
               </ul>
               
-              <button className={`w-full py-4 px-6 rounded-xl font-semibold transition-colors ${plan.popular ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-gray-900 hover:bg-gray-800 text-white'}`}>
-                Choose {plan.name}
-              </button>
+              {(() => {
+                const stripeProduct = stripeProducts.find(p => 
+                  p.name.toLowerCase().includes(plan.name.toLowerCase()) && 
+                  p.mode === 'subscription'
+                );
+                
+                if (stripeProduct) {
+                  return (
+                    <StripeCheckout 
+                      product={stripeProduct}
+                      onSuccess={() => console.log(`${plan.name} subscription started`)}
+                      onError={(error) => console.error('Subscription error:', error)}
+                    />
+                  );
+                } else {
+                  return (
+                    <button className={`w-full py-4 px-6 rounded-xl font-semibold transition-colors ${plan.popular ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-gray-900 hover:bg-gray-800 text-white'}`}>
+                      Contact for {plan.name}
+                    </button>
+                  );
+                }
+              })()}
             </div>
           ))}
         </div>
