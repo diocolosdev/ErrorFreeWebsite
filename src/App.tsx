@@ -89,6 +89,7 @@ function App() {
         ) : (
           <>
             <Header />
+//Route path="/services" element={<ServicesPage onBookNow={handleBookNow} />} /
             <main>
               <Routes>
                 <Route path="/" element={<HomePage onBookNow={handleBookNow} hasAnalyticsConsent={hasConsent} />} />
