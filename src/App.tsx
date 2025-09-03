@@ -93,7 +93,6 @@ function App() {
               <Routes>
                 <Route path="/" element={<HomePage onBookNow={handleBookNow} hasAnalyticsConsent={hasConsent} />} />
                 <Route path="/services" element={<ServicesPage onBookNow={handleBookNow} />} />
-                <Route path="/universities" element={<UniversitiesPage onBookNow={handleBookNow} />} />
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/faq" element={<FAQPage />} />
