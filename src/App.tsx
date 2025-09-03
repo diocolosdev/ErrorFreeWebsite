@@ -1,21 +1,27 @@
-import React, { useState } from 'react';
-import { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import Header from './components/Header';
-import Hero from './components/Hero';
-import Services from './components/Services';
-import Pricing from './components/Pricing';
-import BusinessPlans from './components/BusinessPlans';
-import Coverage from './components/Coverage';
-import TrustSection from './components/TrustSection';
-import BookingWidget from './components/BookingWidget';
-import Reviews from './components/Reviews';
-import FAQ from './components/FAQ';
-import Contact from './components/Contact';
 import Footer from './components/Footer';
 import StickyCTAs from './components/StickyCTAs';
 import ConsentBanner from './components/ConsentBanner';
+import BookingWidget from './components/BookingWidget';
 import PaymentConfirmation from './components/PaymentConfirmation';
+
+// Import all pages
+import HomePage from './pages/HomePage';
+import ServicesPage from './pages/ServicesPage';
+import UniversitiesPage from './pages/UniversitiesPage';
+import AboutPage from './pages/AboutPage';
+import ContactPage from './pages/ContactPage';
+import FAQPage from './pages/FAQPage';
+import TermsPage from './pages/TermsPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import CookiesPolicyPage from './pages/CookiesPolicyPage';
+import ComplaintsPage from './pages/ComplaintsPage';
+import SecurityPage from './pages/SecurityPage';
+import CustomSetupsPage from './pages/CustomSetupsPage';
+
 import { initGA, trackPageView, trackBookingStart } from './lib/analytics';
 
 function App() {
@@ -84,17 +90,24 @@ function App() {
         ) : (
           <>
             <Header />
-            <Hero onBookNow={handleBookNow} />
-            <Services />
-            <Pricing />
-            <BusinessPlans />
-            <TrustSection />
-            <Coverage />
-            <Reviews />
-            <FAQ />
-            <Contact />
+            <main>
+              <Routes>
+                <Route path="/" element={<HomePage onBookNow={handleBookNow} hasAnalyticsConsent={hasConsent} />} />
+                <Route path="/services" element={<ServicesPage onBookNow={handleBookNow} />} />
+                <Route path="/universities" element={<UniversitiesPage onBookNow={handleBookNow} />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/contact" element={<ContactPage />} />
+                <Route path="/faq" element={<FAQPage />} />
+                <Route path="/terms" element={<TermsPage />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+                <Route path="/cookies-policy" element={<CookiesPolicyPage />} />
+                <Route path="/complaints" element={<ComplaintsPage />} />
+                <Route path="/security" element={<SecurityPage onBookNow={handleBookNow} />} />
+                <Route path="/custom-setups" element={<CustomSetupsPage onBookNow={handleBookNow} />} />
+              </Routes>
+            </main>
             <Footer />
-            <StickyCTAs onBookNow={handleBookNow} />
+            <StickyCTAs onBookNow={handleBookNow} hasAnalyticsConsent={hasConsent} />
             
             {showBooking && (
               <BookingWidget 

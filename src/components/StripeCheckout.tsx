@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
-import { loadStripe } from '@stripe/stripe-js';
 import { CreditCard, Lock, Loader } from 'lucide-react';
-import { useAuth } from './Auth/AuthProvider';
 import { StripeProduct } from '../stripe-config';
-
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 interface StripeCheckoutProps {
   product: StripeProduct;
@@ -14,53 +10,29 @@ interface StripeCheckoutProps {
 
 const StripeCheckout: React.FC<StripeCheckoutProps> = ({ product, onSuccess, onError }) => {
   const [loading, setLoading] = useState(false);
-  const { session } = useAuth();
 
   const handleCheckout = async () => {
-    if (!session) {
-      onError?.('Please sign in to continue');
-      return;
-    }
-
     setLoading(true);
 
     try {
-      const stripe = await stripePromise;
-      if (!stripe) {
-        throw new Error('Stripe failed to load');
-      }
+      // For demo purposes, simulate a successful checkout
+      // In production, this would integrate with your Stripe backend
+      
+      console.log('Processing checkout for:', product.name);
+      
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Simulate successful checkout
+      alert(`Thank you for your interest in ${product.name}! 
+      
+Please contact us to complete your purchase:
+📞 Phone: 07745432478
+📧 Email: support@errorfree247.co.uk
+💬 WhatsApp: 07745432478
 
-      // Call our edge function to create checkout session
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/stripe-checkout`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`,
-        },
-        body: JSON.stringify({
-          price_id: product.priceId,
-          mode: product.mode,
-          success_url: `${window.location.origin}/dashboard?success=true`,
-          cancel_url: `${window.location.origin}/dashboard?canceled=true`,
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to create checkout session');
-      }
-
-      const { sessionId } = await response.json();
-
-      // Redirect to Stripe Checkout
-      const { error } = await stripe.redirectToCheckout({
-        sessionId,
-      });
-
-      if (error) {
-        throw new Error(error.message);
-      }
-
+We'll process your ${product.mode === 'subscription' ? 'subscription' : 'payment'} and get you set up immediately.`);
+      
       onSuccess?.();
     } catch (error: any) {
       console.error('Checkout error:', error);
