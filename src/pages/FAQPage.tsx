@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Helmet } from 'react-helmet-async';
+import { ChevronDown, ChevronUp, Phone, MessageSquare, Mail } from 'lucide-react';
 import { ChevronDown, ChevronUp, Phone, MessageSquare, Mail } from 'lucide-react';
 
 const FAQPage = () => {
@@ -139,5 +139,3 @@ const FAQPage = () => {
     </section>
   );
 };
-
-export default FAQPage;
