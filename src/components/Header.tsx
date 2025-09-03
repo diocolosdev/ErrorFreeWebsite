@@ -51,7 +51,6 @@ const Header = () => {
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center space-x-8">
               <Link to="/services" className="text-gray-700 hover:text-blue-600 transition-colors">Services</Link>
-              <Link to="/universities" className="text-gray-700 hover:text-blue-600 transition-colors">Universities</Link>
               <Link to="/about" className="text-gray-700 hover:text-blue-600 transition-colors">About</Link>
               <Link to="/contact" className="text-gray-700 hover:text-blue-600 transition-colors">Contact</Link>
               <Link to="/faq" className="text-gray-700 hover:text-blue-600 transition-colors">FAQ</Link>
@@ -79,7 +78,6 @@ const Header = () => {
             <div className="lg:hidden py-4 border-t border-gray-200">
               <nav className="flex flex-col space-y-3">
                 <Link to="/services" className="text-gray-700 hover:text-blue-600 px-2 py-1">Services</Link>
-                <Link to="/universities" className="text-gray-700 hover:text-blue-600 px-2 py-1">Universities</Link>
                 <Link to="/about" className="text-gray-700 hover:text-blue-600 px-2 py-1">About</Link>
                 <Link to="/contact" className="text-gray-700 hover:text-blue-600 px-2 py-1">Contact</Link>
                 <Link to="/faq" className="text-gray-700 hover:text-blue-600 px-2 py-1">FAQ</Link>
