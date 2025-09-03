@@ -11,7 +11,6 @@ import PaymentConfirmation from './components/PaymentConfirmation';
 // Import all pages
 import HomePage from './pages/HomePage';
 import ServicesPage from './pages/ServicesPage';
-import UniversitiesPage from './pages/UniversitiesPage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import FAQPage from './pages/FAQPage';
