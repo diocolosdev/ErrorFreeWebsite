@@ -20,6 +20,7 @@ import CookiesPolicyPage from './pages/CookiesPolicyPage';
 import ComplaintsPage from './pages/ComplaintsPage';
 import SecurityPage from './pages/SecurityPage';
 import CustomSetupsPage from './pages/CustomSetupsPage';
+import SuccessPage from './components/SuccessPage';
 
 import { initGA, trackPageView, trackBookingStart } from './lib/analytics';
 
@@ -89,7 +90,6 @@ function App() {
         ) : (
           <>
             <Header />
-//Route path="/services" element={<ServicesPage onBookNow={handleBookNow} />} /
             <main>
               <Routes>
                 <Route path="/" element={<HomePage onBookNow={handleBookNow} hasAnalyticsConsent={hasConsent} />} />
@@ -103,6 +103,10 @@ function App() {
                 <Route path="/complaints" element={<ComplaintsPage />} />
                 <Route path="/security" element={<SecurityPage onBookNow={handleBookNow} />} />
                 <Route path="/custom-setups" element={<CustomSetupsPage onBookNow={handleBookNow} />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/signup" element={<SignupPage />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/success" element={<SuccessPage />} />
               </Routes>
             </main>
             <Footer />
