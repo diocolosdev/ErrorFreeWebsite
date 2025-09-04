@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, Phone, MessageSquare, Mail } from 'lucide-react';
-import { ChevronDown, ChevronUp, Phone, MessageSquare, Mail } from 'lucide-react';
 
 const FAQPage = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
