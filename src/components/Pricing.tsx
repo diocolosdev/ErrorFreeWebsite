@@ -3,7 +3,11 @@ import { Clock, Home, Monitor, CheckCircle } from 'lucide-react';
 import StripeCheckout from './StripeCheckout';
 import { stripeProducts } from '../stripe-config';
 
-const Pricing = () => {
+interface PricingProps {
+  onBookNow: () => void;
+}
+
+const Pricing: React.FC<PricingProps> = ({ onBookNow }) => {
   const pricingCards = [
     {
       icon: <Clock className="w-8 h-8 text-blue-600" />,
