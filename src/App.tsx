@@ -14,6 +14,7 @@ import LoginPage from './components/Auth/LoginPage';
 import SignupPage from './components/Auth/SignupPage';
 import ServicesPage from './pages/ServicesPage';
 import AboutPage from './pages/AboutPage';
+import Dashboard from './components/Dashboard/Dashboard';
 import ContactPage from './pages/ContactPage';
 import FAQPage from './pages/FAQPage';
 import TermsPage from './pages/TermsPage';
