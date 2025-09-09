@@ -29,7 +29,7 @@ const HomePage: React.FC<HomePageProps> = ({ onBookNow, hasAnalyticsConsent }) =
       
       <Hero onBookNow={onBookNow} hasAnalyticsConsent={hasAnalyticsConsent} />
       <Services />
-      <Pricing />
+      <Pricing onBookNow={onBookNow} />
       <BusinessPlans />
       <Reviews />
       <Coverage />
