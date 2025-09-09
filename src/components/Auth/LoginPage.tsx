@@ -5,10 +5,10 @@ import { Mail, Lock, Eye, EyeOff, LogIn } from 'lucide-react';
 import { useAuth } from './AuthProvider';
 
 const LoginPage = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{ type: 'error' | 'success'; text: string } | null>(null);
   
