@@ -24,7 +24,7 @@ const LoginPage = () => {
     if (error) {
       setMessage({ type: 'error', text: error.message });
     } else {
-      setMessage({ type: 'success', text: 'Successfully signed in!' });
+      navigate('/dashboard');
     }
 
     setLoading(false);
