@@ -10,6 +10,7 @@ import PaymentConfirmation from './components/PaymentConfirmation';
 
 // Import all pages
 import HomePage from './pages/HomePage';
+import LoginPage from './components/Auth/LoginPage';
 import ServicesPage from './pages/ServicesPage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
