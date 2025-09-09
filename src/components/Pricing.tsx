@@ -110,7 +110,9 @@ const Pricing: React.FC<PricingProps> = ({ onBookNow }) => {
                 ))}
               </div>
               
-              <button className={`w-full py-3 px-6 rounded-xl font-semibold transition-colors ${card.popular ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-gray-900 hover:bg-gray-800 text-white'}`}>
+              <button 
+                onClick={onBookNow}
+                className={`w-full py-3 px-6 rounded-xl font-semibold transition-colors ${card.popular ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-gray-900 hover:bg-gray-800 text-white'}`}>
                 Book Now
               </button>
             </div>
