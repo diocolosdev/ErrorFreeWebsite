@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
+import { loadStripe } from '@stripe/stripe-js';
 import { CreditCard, Lock, Loader } from 'lucide-react';
 import { StripeProduct } from '../stripe-config';
+
+// Carregue o Stripe com a sua chave publicável (fora do componente)
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY!);
 
 interface StripeCheckoutProps {
   product: StripeProduct;
@@ -15,24 +19,34 @@ const StripeCheckout: React.FC<StripeCheckoutProps> = ({ product, onSuccess, onE
     setLoading(true);
 
     try {
-      // For demo purposes, simulate a successful checkout
-      // In production, this would integrate with your Stripe backend
-      
-      console.log('Processing checkout for:', product.name);
-      
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Simulate successful checkout
-      alert(`Thank you for your interest in ${product.name}! 
-      
-Please contact us to complete your purchase:
-📞 Phone: 07745432478
-📧 Email: support@errorfree247.co.uk
-💬 WhatsApp: 07745432478
+      // 1. Chame a nossa Supabase Edge Function para criar a sessão
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-checkout-session`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
+        },
+        body: JSON.stringify({ priceId: product.priceId }),
+      });
 
-We'll process your ${product.mode === 'subscription' ? 'subscription' : 'payment'} and get you set up immediately.`);
+      const { sessionId, error: functionError } = await response.json();
+
+      if (functionError) {
+        throw new Error(functionError);
+      }
+
+      // 2. Redirecione o utilizador para a página de pagamento do Stripe
+      const stripe = await stripePromise;
+      if (!stripe) {
+        throw new Error('Stripe.js has not loaded yet.');
+      }
       
+      const { error } = await stripe.redirectToCheckout({ sessionId });
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
       onSuccess?.();
     } catch (error: any) {
       console.error('Checkout error:', error);
@@ -57,8 +71,8 @@ We'll process your ${product.mode === 'subscription' ? 'subscription' : 'payment
         <>
           <CreditCard className="w-5 h-5" />
           <span>
-            {product.mode === 'subscription' 
-              ? `Subscribe for £${product.price}/month` 
+            {product.mode === 'subscription'
+              ? `Subscribe for £${product.price}/month`
               : `Pay £${product.price}`
             }
           </span>
